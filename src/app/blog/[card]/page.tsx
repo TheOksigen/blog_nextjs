@@ -27,13 +27,13 @@ async function page({ params }: { params: { card: string } }) {
                   Blog
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Updated <time>{updatedAt.split("T")[0]}</time><br />
-                  Created <time>{createdAt.split("T")[0]}</time>
+                  Updated <time>{new Date(updatedAt).toISOString().split("T")[0]}</time><br />
+                  Created <time>{new Date(createdAt).toISOString().split("T")[0]}</time>
                 </p>
               </div>
             </div>
 
-            {/* Render description as HTML */}
+            
             <div
               className="mt-6 text-gray-500"
               dangerouslySetInnerHTML={{ __html: description }}
@@ -68,9 +68,13 @@ async function page({ params }: { params: { card: string } }) {
                 </li>
                 <li>
                   <a href="#" className="flex h-6 w-6 items-center justify-center text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Share on X</span>
+                    <span className="sr-only">Share on Twitter</span>
                     <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" className="h-5 w-5">
-                      <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.278-.006-.417A6.676 6.676 0 0016 3.542a6.533 6.533 0 01-1.889.518 3.301 3.301 0 001.444-1.817 6.533 6.533 0 01-2.072.793A3.286 3.286 0 009.885 2a3.286 3.286 0 00-3.197 4.034 9.325 9.325 0 01-6.767-3.429A3.286 3.286 0 002.92 7.029a3.27 3.27 0 01-1.486-.41v.041a3.286 3.286 0 002.633 3.218 3.203 3.203 0 01-.865.115c-.21 0-.423-.021-.626-.057a3.286 3.286 0 003.066 2.279A6.588 6.588 0 010 13.444a9.29 9.29 0 005.026 1.472"></path>
+                      <path
+                        d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.142-.004-.284-.01-.425A6.673 6.673 0 0016 3.542a6.533 6.533 0 01-1.889.518 3.3 3.3 0 001.443-1.817 6.533 6.533 0 01-2.084.797A3.28 3.28 0 0011.07 2c-1.812 0-3.28 1.468-3.28 3.281 0 .257.03.507.085.747A9.325 9.325 0 011.112 2.43a3.285 3.285 0 001.015 4.381A3.266 3.266 0 01.64 6.575v.041c0 1.593 1.134 2.921 2.638 3.222a3.29 3.29 0 01-1.482.056 3.283 3.283 0 003.065 2.278A6.588 6.588 0 010 13.52a9.29 9.29 0 005.026 1.472"
+                        clipRule="evenodd"
+                        fillRule="evenodd"
+                      />
                     </svg>
                   </a>
                 </li>

@@ -65,5 +65,5 @@ export const uploadImage = async (file: File): Promise<string> => {
     }
     let data = await response.json();
 
-    return data;
+    return data.img_url;
 }

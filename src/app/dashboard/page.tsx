@@ -1,26 +1,29 @@
-'use client'
+"use client"
 import { createPost, uploadImage } from '@/api/api';
 import { CreatePostDto } from '@/types/mainTypes';
 import { useRef, useState } from 'react';
-import { PhotoIcon } from '@heroicons/react/24/solid'
+import { PhotoIcon } from '@heroicons/react/24/solid';
 import toast from 'react-hot-toast';
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 
-export default function page() {
-
+export default function Page() {
   const [img_url, setImg_url] = useState<string | null>(null);
   const [title, setTitle] = useState('');
-  const editorRef = useRef(null);
+  const editorRef = useRef<any>(null); // Use `any` or a specific type if necessary
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
 
     if (file) {
       try {
-        const { img_url } = await uploadImage(file);
-        setImg_url(img_url);
+        const response = await uploadImage(file);
+        setImg_url(response);
       } catch (error) {
-        toast.error(error);
+        if (error instanceof Error) {
+          toast.error(error.message);
+        } else {
+          toast.error("Failed to upload image.");
+        }
       }
     } else {
       console.error('No file selected');
@@ -30,25 +33,28 @@ export default function page() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const descriptionContent = editorRef.current?.getContent();
-    console.log(descriptionContent)
+    const descriptionContent = editorRef.current?.getContent(); // Use type assertion if needed
+    console.log(descriptionContent);
+
     if (!img_url || !title || !descriptionContent) {
       toast.error("Please fill all fields and select a file.");
       setTitle('');
-      editorRef.current = null
       setImg_url(null);
       return;
     }
 
     try {
-      const body: CreatePostDto = { img_url, title, description: descriptionContent }
-
+      const body: CreatePostDto = { img_url, title, description: descriptionContent };
       await createPost(body);
       toast.success('Post saved successfully!');
       setTitle('');
       setImg_url(null);
     } catch (error) {
-      toast.error("Failed to save post.");
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Failed to save post.");
+      }
     }
   };
 
@@ -81,7 +87,7 @@ export default function page() {
                 Description
               </label>
               <div className="mt-2">
-                <Editor
+                <TinyMCEEditor
                   apiKey='mm1zpjaxjesqyul4q6or2ssdisva6hp0xgmuyacm32481s87'
                   onInit={(evt, editor) => editorRef.current = editor}
                   initialValue=""
@@ -110,8 +116,9 @@ export default function page() {
                           id="file-upload"
                           name="file-upload"
                           type="file"
-                          onInput={handleFileChange}
-                          className="sr-only" />
+                          onChange={handleFileChange} // Use onChange instead of onInput
+                          className="sr-only"
+                        />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
@@ -119,9 +126,11 @@ export default function page() {
                   </div>
                 </div>
               </div>
-            ) : <div className="mt-4">
-              <img src={img_url} alt="Uploaded" className="max-w-xs mx-auto rounded-lg" />
-            </div>}
+            ) : (
+              <div className="mt-4">
+                <img src={img_url} alt="Uploaded" className="max-w-xs mx-auto rounded-lg" />
+              </div>
+            )}
           </div>
         </div>
       </div>

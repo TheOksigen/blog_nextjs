@@ -6,6 +6,9 @@ export interface Post {
     createdAt: Date;
     updatedAt: Date;
 }
+export interface UploadImageResponse {
+    img_url: string;
+  }
 
 export interface CreatePostDto {
     title: string;
