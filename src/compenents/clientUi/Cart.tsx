@@ -2,14 +2,14 @@ import { Post } from '@/types/mainTypes'
 import Link from 'next/link'
 
 const Cart: React.FC<Post> = ({ _id, createdAt, description, img_url, title, updatedAt }) => {
-    
+
     return (
         <>
 
             <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
                 <div className="aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96">
                     <img
-                        src={img_url}                        
+                        src={img_url}
                         alt={title}
                         className="h-full w-full object-cover object-center sm:h-full sm:w-full"
                     />
@@ -21,7 +21,7 @@ const Cart: React.FC<Post> = ({ _id, createdAt, description, img_url, title, upd
                             {title}
                         </Link>
                     </h3>
-                    <p className="text-sm text-gray-500">{description}</p>
+                    <p dangerouslySetInnerHTML={{ __html: description }} className="text-sm text-gray-500" />
 
                 </div>
                 <div className="mt-6">
